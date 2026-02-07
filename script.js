@@ -57,6 +57,28 @@ noBtn.addEventListener("mouseover", () => {
 //     }
 // });
 
+// Music Button
+const musicBtn = document.getElementById("music-btn");
+const audio = document.getElementById("music");
+
+musicBtn.addEventListener("click", () => {
+    // Set the audio source - replace "music.mp3" with your audio file
+    audio.src = "music.mp3";
+    
+    if (audio.paused) {
+        audio.play();
+        musicBtn.textContent = "🎵 Playing...";
+    } else {
+        audio.pause();
+        audio.currentTime = 0;
+        musicBtn.textContent = "🎵 Tap Me";
+    }
+});
+
+audio.addEventListener("ended", () => {
+    musicBtn.textContent = "🎵 Tap Me";
+});
+
 // YES is clicked
 
 yesBtn.addEventListener("click", () => {
