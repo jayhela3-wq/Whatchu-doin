@@ -209,16 +209,21 @@ display: inline-block;
     cursor: default;
 }
 
-.no-btn.shrinking {
-    animation: shrink 0.5s ease forwards;
+.no-btn.shrinking-away {
+    animation: shrink-away 0.6s ease forwards;
 }
 
-@keyframes shrink {
+@keyframes shrink-away {
     0% {
         transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(0.6);
+        opacity: 0.7;
     }
     100% {
-        transform: scale(0.3);
+        transform: scale(0);
         opacity: 0;
     }
 }
@@ -264,48 +269,76 @@ display: inline-block;
 /* Love Meter */
 #love-meter {
     position: fixed;
-    bottom: 30px;
+    top: 100px;
     left: 50%;
     transform: translateX(-50%);
-    background: linear-gradient(135deg, #ff69b4 0%, #ff1493 100%);
-    padding: 15px 25px;
-    border-radius: 20px;
-    box-shadow: 0 4px 15px rgba(255, 69, 180, 0.3);
+    background: linear-gradient(135deg, #ff69b4 0%, #ff1493 50%, #ff69b4 100%);
+    padding: 20px 30px;
+    border-radius: 30px;
+    box-shadow: 0 8px 30px rgba(255, 69, 180, 0.4), inset 0 2px 10px rgba(255, 255, 255, 0.3);
     z-index: 50;
     text-align: center;
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(10px);
+    animation: meter-glow 2s ease-in-out infinite;
+}
+
+@keyframes meter-glow {
+    0%, 100% {
+        box-shadow: 0 8px 30px rgba(255, 69, 180, 0.4), inset 0 2px 10px rgba(255, 255, 255, 0.3);
+    }
+    50% {
+        box-shadow: 0 12px 40px rgba(255, 69, 180, 0.6), inset 0 2px 10px rgba(255, 255, 255, 0.5);
+    }
 }
 
 .love-meter-label {
     color: white;
-    font-size: 14px;
+    font-size: 16px;
     font-weight: bold;
-    margin-bottom: 8px;
+    margin-bottom: 10px;
     font-family: "Pixelify Sans", sans-serif;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .love-meter-bar {
-    width: 200px;
-    height: 20px;
-    background-color: rgba(255, 255, 255, 0.3);
-    border-radius: 10px;
+    width: 220px;
+    height: 25px;
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 15px;
     overflow: hidden;
-    margin-bottom: 5px;
+    margin-bottom: 8px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .love-meter-fill {
     height: 100%;
-    background: linear-gradient(90deg, #ffc0cb, #ff1493, #ff69b4);
-    border-radius: 10px;
-    transition: width 0.3s ease;
+    background: linear-gradient(90deg, #ffc0cb 0%, #ff69b4 50%, #ff1493 100%);
+    border-radius: 12px;
+    transition: width 0.4s ease;
     width: 0%;
-    box-shadow: 0 0 10px rgba(255, 105, 180, 0.8);
+    box-shadow: 0 0 15px rgba(255, 105, 180, 1), inset 0 1px 3px rgba(255, 255, 255, 0.5);
+    position: relative;
+}
+
+.love-meter-fill::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.3) 0%, transparent 50%);
+    border-radius: 12px;
 }
 
 .love-meter-percent {
     color: white;
-    font-size: 12px;
+    font-size: 16px;
     font-weight: bold;
     font-family: "Pixelify Sans", sans-serif;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 /* Heart Explosions */
@@ -381,31 +414,48 @@ display: inline-block;
     display: block;
 }
 
-/* Reset Button */
-.reset-btn {
+/* Music Pointer */
+#music-pointer {
     position: fixed;
-    top: 20px;
-    right: 160px;
-    padding: 12px 20px;
-    font-size: 18px;
-    font-family: "Pixelify Sans", sans-serif;
-    background-color: #6495ED;
-    color: white;
-    border: none;
-    border-radius: 25px;
-    cursor: pointer;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    top: 10px;
+    right: 20px;
+    font-size: 32px;
+    display: none;
+    z-index: 101;
+    animation: point-bounce 0.8s ease-in-out infinite;
 }
 
-.reset-btn:hover {
-    transform: scale(1.1);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+@keyframes point-bounce {
+    0% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+    50% {
+        transform: translateY(8px);
+        opacity: 0.8;
+    }
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
 }
 
-.reset-btn:active {
-    transform: scale(0.95);
+#music-pointer.disappear {
+    animation: pointer-disappear 0.5s ease forwards;
 }
+
+@keyframes pointer-disappear {
+    0% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-20px) scale(0.5);
+    }
+}
+
+
 
 /* Timer Display */
 .timer-display {

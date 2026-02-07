@@ -55,6 +55,7 @@ const loveMeter = document.getElementById("love-meter");
 const loveFill = document.getElementById("love-fill");
 const lovePercent = document.getElementById("love-percent");
 const loveLabel = document.getElementById("love-label");
+const musicPointer = document.getElementById("music-pointer");
 
 let lovePercentage = 0;
 
@@ -258,7 +259,6 @@ envelope.addEventListener("click", () => {
     envelope.style.display = "none";
     letter.style.display = "flex";
     timerDisplay.style.display = "block";
-    resetBtn.style.display = "block";
     loveMeter.style.display = "block";
     
     // Start falling petals
@@ -270,6 +270,8 @@ envelope.addEventListener("click", () => {
     
     setTimeout(() => {
         document.querySelector(".letter-window").classList.add("open");
+        // Show music pointer
+        musicPointer.style.display = "block";
         // Typewriter effect on title
         typeWriter(title, translations[currentLanguage].question, 30);
         // Floating hearts on open
@@ -292,7 +294,11 @@ function playSound(type) {
 
 // ===== MOVE NO BUTTON =====
 let noClickCount = 0;
+let noButtonShrinking = false;
+
 noBtn.addEventListener("mouseover", () => {
+    if (noButtonShrinking) return;
+    
     const min = 200;
     const max = 200;
     const distance = Math.random() * (max - min) + min;
@@ -308,37 +314,51 @@ noBtn.addEventListener("mouseover", () => {
     
     // Heart explosion at mouse position
     createHeartExplosion(event.clientX, event.clientY);
+});
+
+// Click/Tap handler for No button - shrinks on each interaction
+noBtn.addEventListener("click", () => {
+    if (noButtonShrinking) return;
     
     noClickCount++;
+    updateLoveMeter();
+    createHeartExplosion(event.clientX || window.innerWidth/2, event.clientY || window.innerHeight/2);
     
-    // Easter egg: After 5 hovers, No button starts shrinking
-    if (noClickCount >= 5) {
-        noBtn.classList.add("shrinking");
+    // After 3 clicks, start shrinking animation
+    if (noClickCount >= 3) {
+        noButtonShrinking = true;
+        noBtn.classList.add("shrinking-away");
         setTimeout(() => {
-            noBtn.style.transform = "translate(0, 0)";
-            noBtn.classList.remove("shrinking");
-            noClickCount = 0;
-        }, 500);
+            noBtn.style.display = "none";
+        }, 600);
     }
 });
 
 // Touch support for No button
-noBtn.addEventListener("touchstart", () => {
-    const min = 100;
-    const max = 100;
-    const distance = Math.random() * (max - min) + min;
-    const angle = Math.random() * Math.PI * 2;
-    const moveX = Math.cos(angle) * distance;
-    const moveY = Math.sin(angle) * distance;
+noBtn.addEventListener("touchstart", (e) => {
+    if (noButtonShrinking) return;
     
-    noBtn.style.transition = "transform 0.3s ease";
-    noBtn.style.transform = `translate(${moveX}px, ${moveY}px)`;
+    noClickCount++;
+    updateLoveMeter();
+    createHeartExplosion(e.touches[0].clientX, e.touches[0].clientY);
+    
+    // After 3 taps, start shrinking animation
+    if (noClickCount >= 3) {
+        noButtonShrinking = true;
+        noBtn.classList.add("shrinking-away");
+        setTimeout(() => {
+            noBtn.style.display = "none";
+        }, 600);
+    }
 });
 
 // ===== MUSIC BUTTON =====
 musicBtn.addEventListener("click", () => {
     playSound("click");
     audio.src = "Agar Tum Kaho Toh - Gunda  Allah Rakha LP  Azadi Records  Lyric Video.mp3";
+    
+    // Disappear the pointer
+    musicPointer.classList.add("disappear");
     
     if (audio.paused) {
         audio.play().catch(() => {});
@@ -407,11 +427,7 @@ yesBtn.addEventListener("click", () => {
     setTimeout(() => clearInterval(reactionInterval), 5000);
 });
 
-// ===== RESET BUTTON =====
-resetBtn.addEventListener("click", () => {
-    playSound("click");
-    location.reload();
-});
+
 
 // ===== INITIAL SETUP =====
 setLanguage("en");
