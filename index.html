@@ -15,16 +15,55 @@
     <title>Document</title>
   </head>
   <body>
+    <!-- Floating Hearts -->
+    <div id="hearts-container"></div>
+    
+    <!-- Sparkles Container -->
+    <div id="sparkles-container"></div>
+    
+    <!-- Falling Petals -->
+    <div id="petals-container"></div>
+    
+    <!-- Heart Explosions -->
+    <div id="heart-explosions"></div>
+    
+    <!-- Love Meter -->
+    <div id="love-meter" style="display: none;">
+      <div class="love-meter-label" id="love-label"></div>
+      <div class="love-meter-bar">
+        <div class="love-meter-fill" id="love-fill"></div>
+      </div>
+      <div class="love-meter-percent" id="love-percent">0%</div>
+    </div>
+    
+    <!-- Confetti Canvas -->
+    <canvas id="confetti-canvas"></canvas>
+
+    <!-- Theme & Language Controls -->
+    <div id="controls">
+      <select id="language-select">
+        <option value="en">English</option>
+        <option value="hi">हिंदी</option>
+      </select>
+    </div>
+
     <!-- Envelope Screen -->
     <div id="envelope-container">
       <img src="envelope.png" alt="Envelope" id="envelope" />
-      <p>♡ Letter for You ♡</p>
+      <p id="envelope-text">♡ Letter for You ♡</p>
     </div>
 
     <!-- Letter Screen -->
     <div id="letter-container">
       <audio id="music" style="display: none;"></audio>
+      <audio id="bg-music" style="display: none;" loop></audio>
+      <audio id="sound-effects" style="display: none;"></audio>
+      
       <button id="music-btn" class="music-btn">🎵 Tap Me</button>
+      <button id="reset-btn" class="reset-btn" style="display: none;">↺ Reset</button>
+      
+      <div class="timer-display" id="timer-display" style="display: none;"></div>
+      
       <div class="letter-window">
         <h1 id="letter-title">Nandini, Will you please be my Valentine?</h1>
 
@@ -39,7 +78,7 @@
         </div>
 
         <p id="final-text" class="final-text" style="display: none">
-          <strong>Valentine Date:</strong> Meow Restaurant at 7pm. Dress fancy!
+          <strong id="date-text">Valentine Date:</strong> Meow Restaurant at 7pm. Dress fancy!
         </p>
       </div>
     </div>
